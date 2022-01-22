@@ -28,19 +28,22 @@ import {useForm} from "react-hook-form";
 } */
 
 function ToDoList() {
-    const { register, watch } = useForm();
-    {/* register 함수가 반환하는 객체를 가져다가 input에 props로 줌.
-        watch = form의 입력값들의 변화를 관찰 할 수 있게 해주는 함수.*/}
-    console.log(watch());
+    const { register, handleSubmit, formState } = useForm();
+    {/* handleSubmit => validation 기능 o */}
+    const onValid = (data: any) => {
+        console.log(data);
+    };
+    console.log(formState.errors);
     return(
         <div>
-            <form>
-                <input {...register("email")} placeholder='Email' />
-                <input {...register("firstName")} placeholder='First Name' />
-                <input {...register("lastName")} placeholder='Last Name' />
-                <input {...register("username")} placeholder='Username' />
-                <input {...register("password")} placeholder='Password' />
-                <input {...register("password1")} placeholder='Password1' />
+            <form style={{display: "flex", flexDirection: "column"}} onSubmit={handleSubmit(onValid)}>
+                <input {...register("email",{required: true})} placeholder='Email' />
+                <input {...register("firstName",{required: true})} placeholder='First Name' />
+                <input {...register("lastName",{required: true})} placeholder='Last Name' />
+                <input {...register("username",{required: true, minLength: 5})} placeholder='Username' />
+                <input {...register("password",{required: true, minLength: 10})} placeholder='Password' />
+                <input {...register("password1",{required: "Password is required",minLength:{value:10, message: "Your password is too short.",},})} placeholder='Password1' />
+                {/* HTML에 의지하는게 아니라 JavaScript를 사용해서 validation을 실행 => {...register({required:true})} */}
                 <button>Add</button>
             </form>
         </div>
