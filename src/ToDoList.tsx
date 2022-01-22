@@ -29,6 +29,8 @@ import {useForm} from "react-hook-form";
 
 function ToDoList() {
     const { register, watch } = useForm();
+    {/* register 함수가 반환하는 객체를 가져다가 input에 props로 줌.
+        watch = form의 입력값들의 변화를 관찰 할 수 있게 해주는 함수.*/}
     console.log(watch());
     return(
         <div>
