@@ -34,17 +34,23 @@ interface IForm {
     username: string;
     password: string;
     password1: string;
+    extraError?: string;
   }
 
 function ToDoList() {
-    const { register, handleSubmit, formState: {errors}} = useForm<IForm>({
+    const { register, handleSubmit, formState: {errors}, setError,} = useForm<IForm>({
+        // setError = 발생하는 문제에 따라 추가적으로 에러를 설정할 수 있게 도와줌.
         defaultValues:{
             email: "@naver.com",
         },
     });
-    const onValid = (data: any) => {
-        console.log(data);
+    const onValid = (data: IForm) => {
+        if(data.password !== data.password1){
+            setError("password1",{ message: "Password are not the same"}, {shouldFocus: true});
+        }
+        // setError("extraError", { message: "Server offline."});
     };
+    console.log(errors);
     return(
         <div>
             <form style={{display: "flex", flexDirection: "column"}} onSubmit={handleSubmit(onValid)}>
@@ -56,7 +62,14 @@ function ToDoList() {
                 },
                 })} placeholder='Email' />
                 <span>{errors?.email?.message}</span>
-                <input {...register("firstName",{required: "Write here"})} placeholder='First Name' />
+                <input {...register("firstName",{
+                    required: "Write here", 
+                    validate: {
+                        noMickey: (value) => value.includes("mickey") ? "no mickey allowed": true,
+                        noMouse: (value) => value.includes("mouse") ? "no mouse allowed" : true,
+                    },
+                    })}
+                    placeholder='First Name' />
                 <span>{errors?.firstName?.message}</span>
                 <input {...register("lastName",{required: "Write here"})} placeholder='Last Name' />
                 <span>{errors?.lastName?.message}</span>
@@ -67,6 +80,7 @@ function ToDoList() {
                 <input {...register("password1",{required: "Password is required",minLength:{value:10, message: "Your password is too short.",},})} placeholder='Password1' />
                 <span>{errors?.password1?.message}</span>
                 <button>Add</button>
+                <span>{errors?.extraError?.message}</span>
             </form>
         </div>
     )
