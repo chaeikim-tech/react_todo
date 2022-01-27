@@ -21,6 +21,11 @@ function ToDoList() {
                 <option value="DONE">Done</option>
             </select>
             <CreateToDo />
+            {/* bad example 
+            {category === "TO_DO" && toDo.map((aToDo) => <ToDo key={aToDo.id} {...aToDo} />)}
+            {category === "DOING" && doing.map((aToDo) => <ToDo key={aToDo.id} {...aToDo} />)}
+            {category === "DONE" && done.map((aToDo) => <ToDo key={aToDo.id} {...aToDo} />)}
+ */}
             {toDos?.map((toDo) => (
                 <ToDo key={toDo.id} {...toDo} />
             ))}
