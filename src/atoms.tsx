@@ -3,13 +3,15 @@ import { atom, selector } from "recoil";
 // atom은 그냥 배열.
 //selector는 state를 가져다가 뭔가를 return함
 
+type categories = "TO_DO" | "DOING" | "DONE";
+
 export interface IToDo {
     text: string;
     id: number;
-    category: "TO_DO" | "DOING" | "DONE";
+    category: categories;
 };
 
-export const categoryState = atom({
+export const categoryState = atom<categories>({
     key:"category",
     default: "TO_DO",
 });
